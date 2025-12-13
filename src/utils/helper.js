@@ -20,8 +20,8 @@ if(!mobileNumber || typeof mobileNumber !== 'string' || mobileNumber.length !== 
    res.status(400).json({error : true, statusCode : 400, message: "Invalid Mobile Number, please provide a valid 10 digit mobile number"});
    return false;
 }
-if(!password || typeof password !== 'string' || password.length < 8 || password.length > 15 || !validator.isStrongPassword(password)){
-    res.status(400).json({error : true, statusCode : 400, message: "Invalid Password, password must be between 8 to 15 characters and include at least one uppercase letter, one lowercase letter, one number, and one symbol"});
+if(!password || typeof password !== 'string' || password.length < 8 || password.length > 36 || !validator.isStrongPassword(password)){
+    res.status(400).json({error : true, statusCode : 400, message: "Invalid Password, password must be between 8 to 36 characters and include at least one uppercase letter, one lowercase letter, one number, and one symbol"});
     return false;
 }
 return true;
@@ -29,37 +29,19 @@ return true;
 }
 
 
-
-const encryptPassword= async(password)=>{
-try {
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-    return hashedPassword;
-    
-} catch (error) {
-    console.error(error)
-}
-
-}
-
-const verifyPassword= async(password, hashedPassword)=>{
+const validateUserDataForUpdate=(req, res)=>{
+    const fieldsAllowedForUpdate = ["firstName", "lastName","gender", "age", "photoUrl","interests"]
     try {
-        const isPasswordValid = await bcrypt.compare(password, hashedPassword);
-        return isPasswordValid;
+        const isUpdateAllowed  = Object.keys(req.body).every((key) => fieldsAllowedForUpdate.includes(key));
+        if(!isUpdateAllowed){
+            throw new Error("Update Failed : Invalid User Data")
+        }
+        return isUpdateAllowed;
         
     } catch (error) {
-        console.error(error)
+        throw new Error("Update Failed : Invalid User Data")
     }
 }
 
 
-const generateToken =async (userId)=>{
-    try {
-        const token =await jwt.sign({ _id: userId }, "M@nu123HN", { expiresIn: '1d' });
-        return token;
-    } catch (error) {
-        console.error("Error While Generating Token  - ",error)
-    }
-}
-
-module.exports={validateUserData,encryptPassword, verifyPassword, generateToken};
+module.exports={validateUserData,validateUserDataForUpdate};
