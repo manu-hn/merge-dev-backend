@@ -1,7 +1,7 @@
 const UserModel = require("../model/user.model");
 const ConnectionRequestModel = require("../model/request.model");
 
-
+const USER_SAFE_DATA="firstName lastName emailId gender age interests photoUrl";
 const sendConectionRequest = async (req, res,)=>{
     try {
         // The User ID of the sender is obtained from the authenticated user (req.user)
@@ -87,7 +87,7 @@ const fetchAllReceivedRequests = async (req, res)=>{
             toUserId : loggedInUser?._id,
             status : "interested",
         })
-        .populate("fromUserId", "firstName lastName gender age interests photoUrl");
+        .populate("fromUserId", USER_SAFE_DATA);
        // .populate("fromUserId", ["firstName", "lastName", "gender", "age", "interests", "photoUrl"]);
         
 
@@ -97,8 +97,34 @@ const fetchAllReceivedRequests = async (req, res)=>{
        res.status(400).json({message: "Something Went Wrong", error: error.message})
 }
 }
+
+const fetchAllAcceptedConnections = async (req, res)=>{
+    try{
+        const loggedInUser = req.user;
+
+        const userConnections = await ConnectionRequestModel.find({
+            $or : [
+                { fromUserId : loggedInUser?._id, status : "accepted" },
+                { toUserId : loggedInUser?._id, status : "accepted" }
+            ]
+        }).populate('fromUserId', USER_SAFE_DATA)
+        .populate("toUserId", USER_SAFE_DATA);
+
+        const data = userConnections.map((row)=>{
+            if(row?.fromUserId?._id.toString()===loggedInUser?._id.toString()){
+                return row.toUserId;
+            }
+            return row.fromUserId;
+        })
+        res.status(200).json({success : true,message : "Connection Fected Successfully!", data })
+    }
+    catch(error){
+        res.status(400).json({message: "Something Went Wrong", error: error.message})
+    }
+}
 module.exports={
     sendConectionRequest,
     acceptConnectionRequest, 
     fetchAllReceivedRequests,
+    fetchAllAcceptedConnections
 }

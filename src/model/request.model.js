@@ -7,11 +7,9 @@ const connectionRequestSchema = new Schema({
         type: String,
         enum: {
             values: ['interested', 'ignored', "accepted", "rejected"],
-            message: "{VALUE} is not supported"
+            message: `{VALUE} is not supported`
         }
     },
-
-
 }, { timestamps: true });
 
 // connectionRequestSchema.index({ fromUserId: 1, toUserId: 1 }, { unique: true });

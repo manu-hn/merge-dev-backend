@@ -64,7 +64,7 @@ const userSchema = new Schema({
         timestamps: true
     });
 
-    userSchema.index({emailId : 1});
+    userSchema.index({firstName : 1});
 
 userSchema.pre('save', async function (next) {
 
