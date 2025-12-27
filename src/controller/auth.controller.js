@@ -37,19 +37,20 @@ const registerUser = async (req, res) => {
 const loginRouter = async (req, res) => {
   try {
 
-    const { emailId, password } = req.body;
+    const { emailId,  } = req.body;
     const isUserExists = await UserModel.findOne({ emailId });
     if (!isUserExists) {
       throw new Error("Invalid Credentials");
     }
     const token = await isUserExists.createJWT();
-    const isPasswordValid = await isUserExists.validatePassword(password);
+    const isPasswordValid = await isUserExists.validatePassword(req.body?.password);
     if (!isPasswordValid) {
       throw new Error("Invalid Credentials");
 
     }
+    const {password, ...rest}=isUserExists._doc;
     res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'Strict', expires: new Date(Date.now() + 24 * 60 * 60 * 1000) });
-    res.status(200).json({ error: false, statusCode: 200, message: "Login Successfull" });
+    res.status(200).json({ error: false, statusCode: 200, message: "Login Successfull", data : rest });
     return;
 
   } catch (error) {
