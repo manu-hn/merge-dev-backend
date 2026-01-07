@@ -1,8 +1,6 @@
 const { validateUserData } = require("../utils/helper");
 const UserModel = require("../model/user.model");
 
-
-
 const registerUser = async (req, res) => {
 
   try {
@@ -31,8 +29,6 @@ const registerUser = async (req, res) => {
     throw error;
   }
 }
-
-
 
 const loginRouter = async (req, res) => {
   try {

@@ -4,8 +4,7 @@ const userAuth =async (req, res, next)=>{
   try {
     const token = req.cookies.token;
     if(!token){
-        throw new Error("Unauthorized Access, Token Missing");
-        
+        return res.status(401).json({error : true, statusCode : 401, message: "Unauthorized Access, Please login to continue"});
     }
     const decoded=await jwt.verify(token, 'M@nu123HN');
     const {_id} =decoded;
