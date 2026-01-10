@@ -21,7 +21,10 @@ const registerUser = async (req, res) => {
 
     const user = new UserModel({ firstName, lastName, password, emailId, mobileNumber, gender, age, interests });
     await user.save();
+    const token = await user.createJWT();
+
     const { password: passwordHash, ...rest } = user._doc
+        res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'Strict', expires: new Date(Date.now() + 24 * 60 * 60 * 1000) });
     res.status(201).json({ success: true, erroe: false, statusCode: 201, message: "User Registered Successfully", data: rest });
     return;
   } catch (error) {

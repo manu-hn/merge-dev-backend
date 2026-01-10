@@ -35,7 +35,7 @@ const updateUserProfile = async (req, res)=>{
     }
     const user = req.user;
     const updatedData = req.body;
-    console.log("Updating User Profile ",updatedData);
+  
 
     const updatedUser = await UserModel.findByIdAndUpdate(user._id, updatedData, {new : true});
     const {password, ...rest} = updatedUser._doc;
