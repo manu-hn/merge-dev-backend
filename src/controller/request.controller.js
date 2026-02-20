@@ -39,7 +39,9 @@ const sendConectionRequest = async (req, res,) => {
         // Save the connection request to the database 
         await newConnectionRequest.save();
 
-        res.status(200).json({ success: true, message: "Connection Request Sent Successfully", data: newConnectionRequest })
+        const message = status === "interested" ? "Connection Request Sent Successfully" : "User Ignored Successfully";
+
+        res.status(200).json({ success: true, message:`${message}`, data: newConnectionRequest })
 
     } catch (error) {
         res.status(400).json({ message: "Error While Sending Connection Request", error: error.message })

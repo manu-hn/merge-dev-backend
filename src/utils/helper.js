@@ -32,12 +32,11 @@ return true;
 const validateUserDataForUpdate=(req, )=>{
     const fieldsAllowedForUpdate = ["firstName", "lastName","gender", "age", "photoUrl","interests"]
     try {
-        console.log("Validating User Data For Update ",req.body,  Object.keys(req.body));
+        // console.log("Validating User Data For Update ",req.body,  Object.keys(req.body));
         const isUpdateAllowed  = Object.keys(req.body).some((key) => {
            
             return fieldsAllowedForUpdate.includes(key)
         });
-
 
         if(!isUpdateAllowed){
             throw new Error("Update Failed : Invalid User Data")
