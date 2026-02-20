@@ -10,6 +10,7 @@ const registerUser = async (req, res) => {
       res.status(400).json({ message: "Invalid User Data" });
       return;
     }
+
     const existingUser = await UserModel.findOne({ $or: [{ emailId: req.body.emailId }, { mobileNumber: req.body.mobileNumber }] });
     if (existingUser) {
       res.status(400).json({ error: true, statusCode: 400, message: "User with given emailId or mobileNumber already exists" });
@@ -19,7 +20,7 @@ const registerUser = async (req, res) => {
     const { firstName, lastName, password, emailId, mobileNumber, gender, age, interests } = req?.body;
 
 
-    const user = new UserModel({ firstName, lastName, password, emailId, mobileNumber, gender, age, interests });
+    const user = new UserModel({ firstName, lastName, password, emailId, mobileNumber, gender, age, interests, });
     await user.save();
     const token = await user.createJWT();
 

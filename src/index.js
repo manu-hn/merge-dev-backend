@@ -15,6 +15,8 @@ app.use(cors({
   origin: 'http://localhost:5173',
   credentials: true
 }))
+// 🔥 THIS LINE IS IMPORTANT
+app.use("/uploads", express.static("uploads"));
 app.use(express.json());
 app.use(cookieParser());
 
