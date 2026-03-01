@@ -49,7 +49,9 @@ const loginRouter = async (req, res) => {
 
     }
     const {password, ...rest}=isUserExists._doc;
-    res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'Strict', expires: new Date(Date.now() + 24 * 60 * 60 * 1000) });
+    res.cookie('token', token, { httpOnly: true, secure: false,
+       sameSite: 'Lax',
+       expires: new Date(Date.now() + 24 * 60 * 60 * 1000) });
     res.status(200).json({ error: false, statusCode: 200, message: "Login Successfull", data : rest });
     return;
 
