@@ -89,7 +89,7 @@ userSchema.methods.validatePassword = async function (userPassword) {
     return isPasswordValid;
 }
 userSchema.methods.createJWT = async function () {
-    const token = await jwt.sign({ _id: this._id }, "M@nu123HN", { expiresIn: '1d' });
+    const token = await jwt.sign({ _id: this._id }, process.env.MERGE_DEV_JWT_SECRET_KEY, { expiresIn: '1d' });
     return token;
 }
 

@@ -1,8 +1,9 @@
 const {connect, } = require("mongoose");
+require('dotenv').config();
 
 const connectDB = async ()=>{
-    await connect("mongodb+srv://byteatlas5_db_user:5jLeZtlttmFq011G@cluster0.uitnvbl.mongodb.net/devTinder");   
+    await connect(process.env.MERGE_DEV_MONGO_DB_SECRET);   
     
 }
 
-module.exports = {connectDB}
+module.exports = {connectDB} 
