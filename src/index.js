@@ -10,7 +10,7 @@ const cors = require('cors');
 const { Server } = require('socket.io');
 const { createServer } = require('node:http');
 
-const allowedOrigins = ['http://localhost:5173', 'http://16.171.193.219']
+const allowedOrigins = ['http://localhost:5173', `${process.env.EC2_IP_ADDRESS}`];
 
 const app = express();
 const server = createServer(app);
