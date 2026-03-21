@@ -30,6 +30,7 @@ jobs:
           target: "/home/ec2-user/merge-dev-backend"
           overwrite: true
           rm: false
+          exclude: ".git"
 
       - name: Install dependencies and restart PM2
         uses: appleboy/ssh-action@v1.0.3
